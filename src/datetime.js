@@ -92,24 +92,28 @@ Date.prototype.strftime = function(format, local) {
             zh: ['日', '一', '二', '三', '四', '五', '六'],
         },
         meridians: {
-            english: ['AM', 'PM'],
-            en: ['a.m.', 'p.m.'],
+            english: ['a.m.', 'p.m.'],
+            en: ['AM', 'PM'],
             zh: ['上午', '下午'],
         },
     };
 
     local = local && local.startsWith('zh') ? 'zh' : 'en';
-    format = format.replace('%D', '%m/%d/%y');
     format = format.replace('%F', '%Y-%m-%d');
+    format = format.replace(/%D|%x/, '%m/%d/%y');
     format = format.replace(/%T|%X/, '%H:%M:%S');
+    format = format.replace('%R', '%H:%M');
+    format = format.replace('%r', '%H:%M:%S %p');
+    format = format.replace('%c', '%a %b %e %H:%M:%S %Y');
 
     return format.replace(/%[A-Za-z%]/g, function(f) {
         var ans = f;
         switch (f) {
-            case '%%':
+            case '%%': //原始的%
                 ans = '%';
                 break;
             case '%Y': //4位年份，前置补0
+            case '%G': //4位年份
                 ans = _this.getFullYear();
                 break;
             case '%y': //2位年份，前置补0
@@ -119,6 +123,7 @@ Date.prototype.strftime = function(format, local) {
                 ans = _this.getFullYear() / 100;
                 break;
             case '%m': //月份，前置补0
+            case '%n': //月份（Python中无此参数）
                 ans = _this.getMonth() + 1;
                 break;
             case '%B': //月份，英文全称
@@ -141,6 +146,8 @@ Date.prototype.strftime = function(format, local) {
                 break;
             case '%w': //周几，周日为0
                 ans = _this.getDay();
+            case '%u': //周几，周日为7
+                ans = (0 === ans) ? 7 : ans;
                 break;
             case '%A': //周几，英文全称
                 local = local.startsWith('en') ? 'english' : local;
@@ -149,9 +156,11 @@ Date.prototype.strftime = function(format, local) {
                 ans = local_labels.weekdays[local][d];
                 break;
             case '%H': //24小时格式时钟，前置补0
+            case '%k': //24小时格式时钟
                 ans = _this.getHours();
                 break;
             case '%I': //12小时格式时钟，前置补0
+            case '%l': //12小时格式时钟
                 ans = _this.getHours();
                 ans = ans % 12;
                 break;
@@ -161,13 +170,16 @@ Date.prototype.strftime = function(format, local) {
             case '%S': //秒钟，前置补0
                 ans = _this.getSeconds();
                 break;
+            case '%s': //时间戳
+                ans = parseInt(_this.getTime() / 1000);
+                break;
             case '%f': //百万分之一秒，前置补0
                 var ms = _this.getMilliseconds();
                 ans = padZero(ms * 1000, 6);
                 break;
-            case '%P': //上午或下午，大写不带点号
+            case '%P': //上午或下午，小写带点号（Python中无点号）
                 local = local.startsWith('en') ? 'english' : local;
-            case '%p': //上午或下午，小写带点号
+            case '%p': //上午或下午，大写不带点号
                 var h = _this.getHours();
                 ans = local_labels.meridians[local][h < 12 ? 0 : 1];
                 break;
