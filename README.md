@@ -1,5 +1,16 @@
 # datetime.js
+
 Date对象的补充函数，包括类似Python中的strftime()
+
+示例 https://runjs.cn/code/pbphsxrs
+
+```
+<script>
+//在页面导入 datetime.min.js
+var format = "%Y年 %B %e日 星期%A";
+document.write((new Date).strftime(format, "zh"));
+</script>
+```
 
 ## Date.prototype.strftime(format, local)
 
