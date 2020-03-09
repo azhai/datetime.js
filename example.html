@@ -1,0 +1,18 @@
+<html lang='zh-CN'>
+<head>
+    <meta charset='utf-8'>
+    <script src="./datetime.min.js">
+        //在页面导入 datetime.min.js
+    </script>
+</head>
+
+<body>
+<script>
+    var format = "%Y年 %B %e日 星期%A %H:%M";
+    document.write((new Date).strftime(format, "zh"));
+    document.write("<br>");
+    document.write((new Date).daysAgo(3).humanize("zh"));
+    document.write("<br>");
+</script>
+</body>
+</html>

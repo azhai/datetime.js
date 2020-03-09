@@ -2,15 +2,33 @@
 
 Date对象的补充函数，包括类似Python中的strftime()
 
-示例 https://runjs.cn/code/pbphsxrs
+示例  
+https://runjs.cn/code/pbphsxrs （已失效）
+http://jsrun.pro/FafKp/edit
 
 ```
 <script>
 //在页面导入 datetime.min.js
-var format = "%Y年 %B %e日 星期%A";
+var format = "%Y年 %B %e日 星期%A %H:%M";
 document.write((new Date).strftime(format, "zh"));
+document.write("<br>");
+document.write((new Date).daysAgo(3).humanize("zh"));
+document.write("<br>");
 </script>
 ```
+
+## 压缩JS文件
+
+```
+#安装 UglifyJS2
+npm install uglify-js -g
+#压缩文件
+uglifyjs -c -m -o datetime.min.js -- src/datetime.js
+```
+
+## Date.prototype.humanize(local)
+
+将最近几天日期改为 今天、昨天、x天前、明天、x天后（x为2~9）
 
 ## Date.prototype.strftime(format, local)
 
