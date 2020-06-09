@@ -1,5 +1,8 @@
+/* eslint-disable */
+
 /**
- * nodejs版本，Date对象的补充函数，包括类似Python中的strftime()
+ * Date对象的补充函数，包括类似Python中的strftime()
+ * nodejs 版本，方法有些不同
  * 阿债 https://gitee.com/azhai/datetime.js
  */
 
